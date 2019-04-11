@@ -5,7 +5,7 @@
 [urdf]: ./misc_images/DH_reference_urdf.png
 [DHparam]: ./misc_images/DH_reference_original.jpeg
 [KukaArm]: ./misc_images/misc2.png
-[Inverse_q23]: ./misc_images/misc3.png
+[Inverse_q23]: ./misc_images/inverseq23.png
 [Inverse_q1]: ./misc_images/Inverse_q1.png
 [sim init]: ./misc_images/gazebo_init.jpg
 [sim pick]: ./misc_images/gazebo_pick.jpg
@@ -55,7 +55,7 @@ def TF_matrix(alpha, a, d, q):
 ```
 Then the individual transformation matrices are found by simple substitution
 
-```python
+```
 T0_1 = TF_matrix(alpha0, a0, d1, q1).subs(dh)
 T1_2 = TF_matrix(alpha1, a1, d2, q2).subs(dh)
 T2_3 = TF_matrix(alpha2, a2, d3, q3).subs(dh)
@@ -129,24 +129,28 @@ T0_G at home = ([
 From the known cylinder location, the corresponding wrist center (WC) location and orientation can be obtained.
 Then the inverse kineamtics is performed to get the joint angles. 
 Joint 1, 2, and 3 angles are calculated using geometric inverse kinematic method.
-##### Joint 1
+#### Joint 1
 From x-y plane view, joint 1 can be easily calculated.
 ![image for inverse q1][Inverse_q1]
 ```python
 q1 = atan2(WCy, WCx)
 ```
 #### Joint 2 and 3
-For joint 2 and 3, the following diagram is used. 
+For joint 2 and 3, only the elbow up case (q3 > -90 degree) is considered among other possible configurations.
 ![image for inverse q23][Inverse_q23]
-The calculation of joint angle 2 and 3 are shown in the belwo code
+The calculation of joint angle 2 and 3 are shown in the below code.
 ```python
 sideA = 1.501
 sideB = sqrt((sqrt(WCx**2 + WCy**2) -0.35)**2 + (WCz-0.75)**2)
 sideC = 1.25
+
+# use the cosine law to calculate the angles a and b since the triangle ABC is not a right triangle 
 angleA = acos((sideB**2 + sideC**2 - sideA**2)/(2*sideB*sideC))
 angleB = acos((sideA**2 + sideC**2 - sideB**2)/(2*sideA*sideC))
+
 angleWC2base = atan2((WCz-0.75),sqrt(WCx**2 + WCy**2) - 0.35)
 angleWC2link3 = atan2(0.054,1.5)   
+
 theta2 = pi/2 - angleA - angleWC2base
 theta3 = pi/2 - angleB - angleWC2link3  
 ```
@@ -155,8 +159,9 @@ Since the final orientation of the joints, `R0_6 = R0_1*R1_2*R2_3*R3_4*R4_5*R5_6
 ```
 R3_6 = inverse(R0_3) * R_G
 ```
-With the calculated joint angles for 1, 2, and 3 subsituted, it is possible to get `R0_3`. 
-Then the rest is done in the following code
+Here, `R0_3` is the rotation matrix from the base link to the link 3, which is calculated by subsituting the joint angles 1, 2, and 3.
+`R3_6` is the resultant rotaion matrix of the joints in the spherical wrist which should be identical to the final orientation of the wrist (Right Hand Side values). 
+Therefore, by equating the terms in `R3_6` to the RHS wrist orientation values, the joint angles 4, 5, and 6 can be found.
 ```python
 R3_6 = R0_3.transpose() * R_G
 theta4 = atan2( R3_6[2,2], -R3_6[0,2])
@@ -164,8 +169,8 @@ theta5 = atan2(sqrt((R3_6[0,2])**2 + (R3_6[2,2])**2), R3_6[1,2])
 theta6 = atan2(-R3_6[1,1], R3_6[1,0])
 ```
 ## Project Implementation
-The above inverse kinematic analysis is implemented to [IKdebug](RoboND-Kinematics-Project/IK_debug.py) to evalulate the accuracy to the known solutions.
-The full implementation for ROS environment is made to [IKserver](RoboND-Kinematics-Project/kuka_arm/scripts/IK_server.py).
+The above inverse kinematic analysis is implemented to [IK_debug.py](IK_debug.py) to evalulate the accuracy to the known solutions.
+The full implementation for ROS environment is made to [IK_server.py](kuka_arm/scripts/IK_server.py).
 The result from one of the pick-and-place tasks is shown below
 ![initial state][sim init]
 initial state of the robot and the cylinder
