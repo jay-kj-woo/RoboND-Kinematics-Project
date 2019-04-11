@@ -55,7 +55,7 @@ def TF_matrix(alpha, a, d, q):
 ```
 Then the individual transformation matrices are found by simple substitution
 
-```python
+```
 T0_1 = TF_matrix(alpha0, a0, d1, q1).subs(dh)
 T1_2 = TF_matrix(alpha1, a1, d2, q2).subs(dh)
 T2_3 = TF_matrix(alpha2, a2, d3, q3).subs(dh)
@@ -129,7 +129,7 @@ T0_G at home = ([
 From the known cylinder location, the corresponding wrist center (WC) location and orientation can be obtained.
 Then the inverse kineamtics is performed to get the joint angles. 
 Joint 1, 2, and 3 angles are calculated using geometric inverse kinematic method.
-##### Joint 1
+#### Joint 1
 From x-y plane view, joint 1 can be easily calculated.
 ![image for inverse q1][Inverse_q1]
 ```python
@@ -164,8 +164,8 @@ theta5 = atan2(sqrt((R3_6[0,2])**2 + (R3_6[2,2])**2), R3_6[1,2])
 theta6 = atan2(-R3_6[1,1], R3_6[1,0])
 ```
 ## Project Implementation
-The above inverse kinematic analysis is implemented to [IKdebug](RoboND-Kinematics-Project/IK_debug.py) to evalulate the accuracy to the known solutions.
-The full implementation for ROS environment is made to [IKserver](RoboND-Kinematics-Project/kuka_arm/scripts/IK_server.py).
+The above inverse kinematic analysis is implemented to [IK_debug.py](IK_debug.py) to evalulate the accuracy to the known solutions.
+The full implementation for ROS environment is made to [IK_server.py](kuka_arm/scripts/IK_server.py).
 The result from one of the pick-and-place tasks is shown below
 ![initial state][sim init]
 initial state of the robot and the cylinder
