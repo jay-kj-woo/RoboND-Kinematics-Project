@@ -5,7 +5,7 @@
 [urdf]: ./misc_images/DH_reference_urdf.png
 [DHparam]: ./misc_images/DH_reference_original.jpeg
 [KukaArm]: ./misc_images/misc2.png
-[Inverse_q23]: ./misc_images/misc3.png
+[Inverse_q23]: ./misc_images/inverseq23.png
 [Inverse_q1]: ./misc_images/Inverse_q1.png
 [sim init]: ./misc_images/gazebo_init.jpg
 [sim pick]: ./misc_images/gazebo_pick.jpg
@@ -136,17 +136,21 @@ From x-y plane view, joint 1 can be easily calculated.
 q1 = atan2(WCy, WCx)
 ```
 #### Joint 2 and 3
-For joint 2 and 3, the following diagram is used. 
+For joint 2 and 3, only the elbow up case (q3 > -90 degree) is considered among other possible configurations.
 ![image for inverse q23][Inverse_q23]
-The calculation of joint angle 2 and 3 are shown in the belwo code
+The calculation of joint angle 2 and 3 are shown in the below code.
 ```python
 sideA = 1.501
 sideB = sqrt((sqrt(WCx**2 + WCy**2) -0.35)**2 + (WCz-0.75)**2)
 sideC = 1.25
+
+# use the cosine law to calculate the angles a and b since the triangle ABC is not a right triangle 
 angleA = acos((sideB**2 + sideC**2 - sideA**2)/(2*sideB*sideC))
 angleB = acos((sideA**2 + sideC**2 - sideB**2)/(2*sideA*sideC))
+
 angleWC2base = atan2((WCz-0.75),sqrt(WCx**2 + WCy**2) - 0.35)
 angleWC2link3 = atan2(0.054,1.5)   
+
 theta2 = pi/2 - angleA - angleWC2base
 theta3 = pi/2 - angleB - angleWC2link3  
 ```
@@ -155,8 +159,9 @@ Since the final orientation of the joints, `R0_6 = R0_1*R1_2*R2_3*R3_4*R4_5*R5_6
 ```
 R3_6 = inverse(R0_3) * R_G
 ```
-With the calculated joint angles for 1, 2, and 3 subsituted, it is possible to get `R0_3`. 
-Then the rest is done in the following code
+Here, `R0_3` is the rotation matrix from the base link to the link 3, which is calculated by subsituting the joint angles 1, 2, and 3.
+`R3_6` is the resultant rotaion matrix of the joints in the spherical wrist which should be identical to the final orientation of the wrist (Right Hand Side values). 
+Therefore, by equating the terms in `R3_6` to the RHS wrist orientation values, the joint angles 4, 5, and 6 can be found.
 ```python
 R3_6 = R0_3.transpose() * R_G
 theta4 = atan2( R3_6[2,2], -R3_6[0,2])
