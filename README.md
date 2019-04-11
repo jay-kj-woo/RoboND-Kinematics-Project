@@ -2,8 +2,8 @@
 
 [//]: # (Image References)
 
-[urdf]: ./misc_images/DH_reference_original.jpeg
-[DHparam]: ./misc_images/DH_reference_urdf.png
+[urdf]: ./misc_images/urdf.png
+[DHparam]: ./misc_images/DH_reference_original.jpeg
 [KukaArm]: ./misc_images/misc2.png
 [Inverse_q23]: ./misc_images/misc3.png
 [Inverse_q1]: ./misc_images/inverse_q1.png
