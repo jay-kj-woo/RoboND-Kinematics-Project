@@ -2,11 +2,11 @@
 
 [//]: # (Image References)
 
-[urdf]: ./misc_images/urdf.png
+[urdf]: ./misc_images/DH_reference_urdf.png
 [DHparam]: ./misc_images/DH_reference_original.jpeg
 [KukaArm]: ./misc_images/misc2.png
 [Inverse_q23]: ./misc_images/misc3.png
-[Inverse_q1]: ./misc_images/inverse_q1.png
+[Inverse_q1]: ./misc_images/Inverse_q1.png
 [sim init]: ./misc_images/gazebo_init.jpg
 [sim pick]: ./misc_images/gazebo_pick.jpg
 [sim drop]: ./misc_images/gazebo_drop.jpg
@@ -27,7 +27,7 @@ The DH parameter reference frame is shown in the below image.
 ![image of DH reference][DHparam]
 
 The reference frame assigned in URDF file is shown in the below image.
-![image of DH urdf reference][urdr]
+![image of DH urdf reference][urdf]
 
 ### Denavit-Hartenberg Parameter
 After performing the kinematic analys, the following DH parameters are derived. 
