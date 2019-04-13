@@ -10,6 +10,7 @@
 [sim init]: ./misc_images/gazebo_init.jpg
 [sim pick]: ./misc_images/gazebo_pick.jpg
 [sim drop]: ./misc_images/gazebo_drop.jpg
+[mission complete]: ./misc_images/gazebo_mission_complete.jpg
 
 
 # Robotic arm - Pick & Place project for Kuka KR210
@@ -180,4 +181,7 @@ robot successfully traveled to the cylinder pick up location
 
 ![drop state][sim drop]
 robot successfully traveled to the dropping bin location
+
+!.[9/10 complete][mission complete]
+A total of 9 cylinders collected out of 10 trials. 
 
