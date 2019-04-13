@@ -123,7 +123,7 @@ def handle_calculate_IK(req):
             theta1 = atan2(WCy, WCx)
 
             # theta 2 and 3
-            sideA = 1.501
+            sideA = 1.50097
             sideB = sqrt((sqrt(WCx*WCx + WCy*WCy) -0.35)**2 + (WCz-0.75)**2)
             sideC = 1.25
             angleA = acos((sideB*sideB + sideC**2 - sideA**2)/(2*sideB*sideC))
