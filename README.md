@@ -182,6 +182,6 @@ robot successfully traveled to the cylinder pick up location
 ![drop state][sim drop]
 robot successfully traveled to the dropping bin location
 
-!.[9/10 complete][mission complete]
+![9/10 complete][mission complete]
 A total of 9 cylinders collected out of 10 trials. 
 
